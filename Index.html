@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKJ Design — Sonali Khivasara Jogi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; overflow-x: hidden; cursor: default; }
+
+/* ─── TOKENS ────────────────────────────────────────────── */
+:root {
+  --teal: #67c9cb;
+  --teal-dim: rgba(103,201,203,0.12);
+  --teal-mid: rgba(103,201,203,0.35);
+  --black: #0d0d0d;
+  --white: #f9f9f6;
+  --off-white: #f0efe9;
+  --gray: #888;
+
+  --fs-xs:   clamp(0.7rem,  1.2vw, 0.8rem);
+  --fs-sm:   clamp(0.85rem, 1.5vw, 0.95rem);
+  --fs-base: clamp(0.95rem, 1.8vw, 1.05rem);
+  --fs-md:   clamp(1.05rem, 2vw,   1.2rem);
+  --fs-lg:   clamp(1.3rem,  3vw,   1.7rem);
+  --fs-xl:   clamp(1.8rem,  4vw,   2.5rem);
+  --fs-2xl:  clamp(2.4rem,  5.5vw, 3.8rem);
+  --fs-3xl:  clamp(3rem,    7vw,   5.2rem);
+
+  --gap: clamp(2.5rem, 6vw, 5rem);
+  --pad: clamp(1.2rem, 4vw, 3.5rem);
+  --max: 1120px;
+}
+
+/* ─── FISH CANVAS ───────────────────────────────────────── */
+#fish-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ─── HEADER / NAV ──────────────────────────────────────── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem var(--pad);
+  background: rgba(13,13,13,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(103,201,203,0.15);
+  transition: background 0.3s;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.logo-primary {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.02em;
+}
+.logo-sub {
+  font-size: var(--fs-xs);
+  color: var(--teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+nav { display: flex; align-items: center; gap: 2rem; }
+nav a {
+  font-size: var(--fs-sm);
+  color: rgba(249,249,246,0.65);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.25s;
+  position: relative;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--teal);
+  transition: right 0.3s;
+}
+nav a:hover { color: var(--white); }
+nav a:hover::after { right: 0; }
+
+.nav-cta {
+  font-size: var(--fs-sm);
+  color: var(--black) !important;
+  background: var(--teal);
+  padding: 0.45rem 1.1rem;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  transition: opacity 0.25s !important;
+}
+.nav-cta:hover { opacity: 0.85; color: var(--black) !important; }
+.nav-cta::after { display: none !important; }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px; height: 1.5px;
+  background: var(--white);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 60px; left: 0; right: 0;
+  background: rgba(13,13,13,0.97);
+  backdrop-filter: blur(20px);
+  padding: 2rem var(--pad);
+  flex-direction: column;
+  gap: 1.5rem;
+  border-bottom: 1px solid rgba(103,201,203,0.15);
+  z-index: 99;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: var(--fs-md);
+  color: rgba(249,249,246,0.7);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color 0.25s;
+}
+.mobile-menu a:hover { color: var(--teal); }
+
+/* ─── SECTION WRAPPER ──────────────────────────────────── */
+section { width: 100%; }
+.inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+
+/* ─── 1. HERO (BLACK) ───────────────────────────────────── */
+#hero {
+  background: var(--black);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: var(--gap) 0;
+}
+
+.hero-left { }
+.hero-eyebrow {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1px;
+  background: var(--teal);
+}
+
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.hero-sub {
+  font-size: var(--fs-md);
+  color: rgba(249,249,246,0.55);
+  line-height: 1.7;
+  max-width: 420px;
+  margin-bottom: 2.5rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  background: var(--teal);
+  color: var(--black);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.25s, transform 0.2s;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-ghost {
+  color: rgba(249,249,246,0.6);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(249,249,246,0.2);
+  padding-bottom: 2px;
+  transition: color 0.25s, border-color 0.25s;
+}
+.btn-ghost:hover { color: var(--white); border-color: var(--white); }
+
+/* Hero right — big type accent */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+.hero-big-word {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(103,201,203,0.25);
+  line-height: 0.9;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+.hero-badge {
+  position: absolute;
+  bottom: -10px; right: 0;
+  background: var(--teal);
+  color: var(--black);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+}
+
+/* Grain overlay on hero */
+#hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* ─── SECTION LABEL ────────────────────────────────────── */
+.section-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.8rem;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 22px; height: 1px;
+}
+
+/* ─── 2. STORY (WHITE) ──────────────────────────────────── */
+#story {
+  background: var(--white);
+  padding: var(--gap) 0;
+}
+#story .section-label { color: var(--teal); }
+#story .section-label::before { background: var(--teal); }
+
+.story-intro {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+  align-items: start;
+  margin-bottom: 4rem;
+}
+.story-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--black);
+  line-height: 1.12;
+  position: sticky;
+  top: 100px;
+}
+.story-heading em {
+  display: block;
+  font-style: italic;
+  color: var(--teal);
+}
+
+.story-body { }
+.story-body p {
+  font-size: var(--fs-base);
+  color: #2e2e2e;
+  line-height: 1.85;
+  margin-bottom: 1.4rem;
+}
+.story-body p:last-child { margin-bottom: 0; }
+
+.story-pull {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  color: var(--black);
+  line-height: 1.4;
+  border-left: 3px solid var(--teal);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* ─── 3. BUYERS (TEAL) ──────────────────────────────────── */
+#buyers {
+  background: var(--teal);
+  padding: var(--gap) 0;
+}
+#buyers .section-label { color: var(--black); }
+#buyers .section-label::before { background: var(--black); }
+
+.buyers-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.1;
+  margin-bottom: 3rem;
+  max-width: 600px;
+}
+
+.buyers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  background: rgba(0,0,0,0.15);
+}
+
+.buyer-card {
+  background: var(--teal);
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.buyer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--black);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.buyer-card:hover { background: rgba(103,201,203,0.7); }
+.buyer-card:hover::before { transform: scaleX(1); }
+
+.buyer-num {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  color: rgba(0,0,0,0.4);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.buyer-title {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 1.2rem;
+  line-height: 1.2;
+}
+.buyer-card p {
+  font-size: var(--fs-sm);
+  color: rgba(0,0,0,0.7);
+  line-height: 1.75;
+  margin-bottom: 0.8rem;
+}
+.buyer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.buyer-tag {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--black);
+  border: 1.5px solid rgba(0,0,0,0.35);
+  padding: 0.3rem 0.7rem;
+}
+
+/* ─── 4. PHILOSOPHY (BLACK) ────────────────────────────── */
+#philosophy {
+  background: var(--black);
+  padding: var(--gap) 0;
+}
+#philosophy .section-label { color: var(--teal); }
+#philosophy .section-label::before { background: var(--teal); }
+
+.philosophy-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+.philosophy-left { }
+.philosophy-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.12;
+  margin-bottom: 2rem;
+}
+.philosophy-heading em {
+  font-style: italic;
+  color: var(--teal);
+}
+.philosophy-body p {
+  font-size: var(--fs-base);
+  color: rgba(249,249,246,0.55);
+  line-height: 1.85;
+  margin-bottom: 1.2rem;
+}
+
+.philosophy-right { padding-top: 2rem; }
+.big-statement {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-xl);
+  font-weight: 500;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 3rem;
+  border-left: 2px solid var(--teal);
+  padding-left: 1.5rem;
+}
+
+.approach-steps { display: flex; flex-direction: column; gap: 1.5rem; }
+.step {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.step:last-child { border-bottom: none; }
+.step-num {
+  font-size: var(--fs-xs);
+  color: var(--teal);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  min-width: 28px;
+  padding-top: 2px;
+}
+.step-text {
+  font-size: var(--fs-sm);
+  color: rgba(249,249,246,0.6);
+  line-height: 1.7;
+}
+.step-text strong { color: var(--white); font-weight: 500; }
+
+/* ─── 5. SERVICES (WHITE) ───────────────────────────────── */
+#services {
+  background: var(--off-white);
+  padding: var(--gap) 0;
+}
+#services .section-label { color: var(--teal); }
+#services .section-label::before { background: var(--teal); }
+
+.services-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.1;
+  margin-bottom: 3.5rem;
+  max-width: 500px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(0,0,0,0.08);
+}
+
+.service-card {
+  background: var(--off-white);
+  padding: 2.5rem;
+  position: relative;
+  transition: background 0.3s;
+}
+.service-card:hover { background: #e8e7e0; }
+
+.service-icon {
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--teal);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--teal);
+  font-size: 1rem;
+}
+
+.service-type {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 0.6rem;
+}
+.service-title {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+.service-subtitle {
+  font-size: var(--fs-sm);
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+.service-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.service-list li {
+  font-size: var(--fs-sm);
+  color: #3a3a3a;
+  line-height: 1.6;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+.service-list li::before {
+  content: '—';
+  color: var(--teal);
+  flex-shrink: 0;
+  font-weight: 300;
+}
+
+/* ─── 6. CTA (TEAL) ─────────────────────────────────────── */
+#cta {
+  background: var(--teal);
+  padding: var(--gap) 0;
+}
+
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: center;
+}
+
+.cta-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.1;
+}
+.cta-sub {
+  font-size: var(--fs-base);
+  color: rgba(0,0,0,0.55);
+  line-height: 1.65;
+  margin-top: 0.8rem;
+  max-width: 520px;
+}
+
+.cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+  min-width: 200px;
+}
+.btn-dark {
+  background: var(--black);
+  color: var(--white);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: 0.9rem 2rem;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.25s;
+  white-space: nowrap;
+}
+.btn-dark:hover { opacity: 0.8; }
+
+.cta-contact {
+  font-size: var(--fs-xs);
+  color: rgba(0,0,0,0.5);
+  text-align: right;
+  line-height: 1.8;
+}
+.cta-contact a {
+  color: var(--black);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ─── 7. FOOTER (BLACK) ─────────────────────────────────── */
+footer {
+  background: var(--black);
+  padding: clamp(2.5rem,5vw,4rem) 0 clamp(1.5rem,3vw,2rem);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 3rem;
+  align-items: start;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 2rem;
+}
+
+.footer-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.footer-brand-tagline {
+  font-size: var(--fs-xs);
+  color: rgba(249,249,246,0.35);
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+.footer-col-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 0.9rem;
+}
+.footer-col a, .footer-col p {
+  display: block;
+  font-size: var(--fs-sm);
+  color: rgba(249,249,246,0.45);
+  text-decoration: none;
+  margin-bottom: 0.4rem;
+  transition: color 0.25s;
+  line-height: 1.6;
+}
+.footer-col a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-copy {
+  font-size: var(--fs-xs);
+  color: rgba(249,249,246,0.25);
+}
+.footer-credit {
+  font-size: var(--fs-xs);
+  color: rgba(249,249,246,0.25);
+}
+.footer-teal-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+/* ─── SCROLL ANIMATIONS ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.35s; }
+
+/* ─── RESPONSIVE: TABLET ─────────────────────────────────── */
+@media (max-width: 900px) {
+  nav { display: none; }
+  .hamburger { display: flex; }
+
+  .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-right { display: none; }
+
+  .story-intro { grid-template-columns: 1fr; gap: 2rem; }
+  .story-heading { position: static; }
+
+  .buyers-grid { grid-template-columns: 1fr; }
+
+  .philosophy-layout { grid-template-columns: 1fr; gap: 3rem; }
+
+  .services-grid { grid-template-columns: 1fr; }
+
+  .cta-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .cta-actions { align-items: flex-start; }
+  .cta-contact { text-align: left; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .footer-top > :first-child { grid-column: 1 / -1; }
+}
+
+/* ─── RESPONSIVE: MOBILE ─────────────────────────────────── */
+@media (max-width: 580px) {
+  :root { --pad: 1.2rem; --gap: 2.5rem; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .buyer-card { padding: 1.8rem; }
+  .service-card { padding: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Fish Canvas -->
+<canvas id="fish-canvas"></canvas>
+
+<!-- Header -->
+<header id="main-header">
+  <div class="logo">
+    <span class="logo-primary">SKJ Design</span>
+    <span class="logo-sub">Brand &amp; Communication</span>
+  </div>
+  <nav>
+    <a href="#story">Story</a>
+    <a href="#philosophy">Philosophy</a>
+    <a href="#services">Services</a>
+    <a href="#cta" class="nav-cta">Let's Talk</a>
+  </nav>
+  <div class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#story" class="mm-link">Story</a>
+  <a href="#philosophy" class="mm-link">Philosophy</a>
+  <a href="#services" class="mm-link">Services</a>
+  <a href="#cta" class="mm-link">Let's Talk</a>
+</div>
+
+<!-- 1. HERO -->
+<section id="hero">
+  <div class="inner">
+    <div class="hero-grid">
+      <div class="hero-left reveal">
+        <div class="hero-eyebrow">Brand &amp; Communication Design</div>
+        <h1 class="hero-h1">Design that<br><em>performs</em><br>everywhere.</h1>
+        <p class="hero-sub">Across print, digital &amp; physical touchpoints — I build systems that hold, and executions that move.</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn-primary">Work with me</a>
+          <a href="#story" class="btn-ghost">Read the story ↓</a>
+        </div>
+      </div>
+      <div class="hero-right reveal reveal-delay-2">
+        <div class="hero-visual">
+          <div class="hero-big-word">DESIGN<br>IS<br>SYS<br>TEM.</div>
+          <div class="hero-badge">Sonali Khivasara Jogi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. STORY -->
+<section id="story">
+  <div class="inner">
+    <div class="section-label reveal">01 — Sassoon Dock</div>
+    <div class="story-intro">
+      <div class="story-heading reveal">
+        Same fish.<br><em>Different systems.</em>
+      </div>
+      <div class="story-body reveal reveal-delay-1">
+        <p>Most people think design is about what you see. It's not. It's about how consistently something performs — across every place it shows up.</p>
+        <p>I went to Sassoon Dock early one morning. Not as an observer. As a designer trying to understand systems in the real world. Amid the noise, speed, and chaos — there was a pattern. Not in the fish. In the decisions.</p>
+        <div class="story-pull">
+          And the clearest understanding didn't come from the buyers. It came from the women sitting on the ground — sorting the catch, watching every transaction, every day. They see everything.
+        </div>
+        <p>And they told me something simple. There are two types of buyers here — and they revealed everything I needed to understand about design.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. BUYERS -->
+<section id="buyers">
+  <div class="inner">
+    <div class="section-label reveal">02 — The Two Buyers</div>
+    <h2 class="buyers-heading reveal">Two buyers. Two definitions of quality.</h2>
+    <div class="buyers-grid">
+      <div class="buyer-card reveal">
+        <div class="buyer-num">01 / 02</div>
+        <h3 class="buyer-title">The Premium Buyer</h3>
+        <p>They don't rush. They're not looking at "fish." They're looking at uniformity. Same size. Same cut. No variation. Because this isn't a one-time purchase — it feeds into a larger system.</p>
+        <p>Export lines. Restaurant chains. Scaled kitchens. If one piece is off, the system breaks.</p>
+        <p>So what they're really buying is not the product.</p>
+        <div class="buyer-tags">
+          <span class="buyer-tag">Consistency</span>
+          <span class="buyer-tag">Control</span>
+          <span class="buyer-tag">Predictability</span>
+        </div>
+      </div>
+      <div class="buyer-card reveal reveal-delay-1">
+        <div class="buyer-num">02 / 02</div>
+        <h3 class="buyer-title">The Local Buyer</h3>
+        <p>Completely different rhythm. Fast. Direct. "How much?" "Best price?" They don't need perfection — because their world runs differently.</p>
+        <p>Daily sales. Tight margins. Constant movement. They're not building systems. They're sustaining momentum.</p>
+        <p>So what they're buying is not uniformity.</p>
+        <div class="buyer-tags">
+          <span class="buyer-tag">Value</span>
+          <span class="buyer-tag">Speed</span>
+          <span class="buyer-tag">Momentum</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PHILOSOPHY -->
+<section id="philosophy">
+  <div class="inner">
+    <div class="section-label reveal">03 — My Approach</div>
+    <div class="philosophy-layout">
+      <div class="philosophy-left">
+        <h2 class="philosophy-heading reveal">Now replace<br>fish with <em>design.</em></h2>
+        <div class="philosophy-body reveal reveal-delay-1">
+          <p>Some businesses need cohesion. A system that holds across everything — packaging, website, decks, physical spaces. Where every touchpoint feels connected.</p>
+          <p>Others need execution. A clear output. Delivered fast. Solving an immediate need.</p>
+          <p>The mistake? Treating both the same. That's where design starts to fail.</p>
+          <p>Because design is not the deliverable. It's the response to a specific gap.</p>
+        </div>
+      </div>
+      <div class="philosophy-right reveal reveal-delay-2">
+        <div class="big-statement">
+          I don't start with a logo. Or a website. Or a brochure.<br>I start with one question: What is the gap we're solving?
+        </div>
+        <div class="approach-steps">
+          <div class="step">
+            <span class="step-num">01</span>
+            <span class="step-text"><strong>Define the gap.</strong> The distance between where your brand is — and where it needs to perform.</span>
+          </div>
+          <div class="step">
+            <span class="step-num">02</span>
+            <span class="step-text"><strong>Choose the response.</strong> If the gap is consistency, we build a system. If the gap is visibility, we move with speed.</span>
+          </div>
+          <div class="step">
+            <span class="step-num">03</span>
+            <span class="step-text"><strong>Same tools. Different intent.</strong> Because if we don't define the gap — we won't build a brand. We'll just produce work.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. SERVICES -->
+<section id="services">
+  <div class="inner">
+    <div class="section-label reveal">04 — How I Work</div>
+    <h2 class="services-heading reveal">Two ways to engage.</h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">∞</div>
+        <div class="service-type">Retainer</div>
+        <h3 class="service-title">System-led</h3>
+        <p class="service-subtitle">For businesses building long-term brand consistency</p>
+        <ul class="service-list">
+          <li>Cohesive identity across touchpoints</li>
+          <li>Ongoing design support</li>
+          <li>Aligned, scalable systems</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">→</div>
+        <h3 class="service-type">Project-based</h3>
+        <h3 class="service-title">Immediate needs</h3>
+        <p class="service-subtitle">For focused, high-impact execution</p>
+        <ul class="service-list">
+          <li>Defined deliverables</li>
+          <li>Clear timelines</li>
+          <li>Fast, effective output</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CTA -->
+<section id="cta">
+  <div class="inner">
+    <div class="cta-inner">
+      <div class="reveal">
+        <h2 class="cta-heading">In a crowded market,<br>undefined gaps are just noise.</h2>
+        <p class="cta-sub">Let's find yours — and build something that actually performs.</p>
+      </div>
+      <div class="cta-actions reveal reveal-delay-1">
+        <a href="mailto:hello@skj-design.in" class="btn-dark">Start a conversation</a>
+        <div class="cta-contact">
+          <a href="tel:+919819515280">+91 98195 15280</a><br>
+          <a href="http://www.skj-design.in" target="_blank">www.skj-design.in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">SKJ Design</div>
+        <p class="footer-brand-tagline">Sonali Khivasara Jogi — Brand &amp; Communication Design across print, digital &amp; physical touchpoints.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Navigate</div>
+        <a href="#story">Story</a>
+        <a href="#philosophy">Philosophy</a>
+        <a href="#services">Services</a>
+        <a href="#cta">Contact</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Contact</div>
+        <a href="tel:+919819515280">+91 98195 15280</a>
+        <a href="http://www.skj-design.in" target="_blank">www.skj-design.in</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy"><span class="footer-teal-dot"></span>© 2025 SKJ Design. All rights reserved.</span>
+      <span class="footer-credit">Design: Sonali Khivasara Jogi</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── FISH ANIMATION ─────────────────────────────────────── */
+const canvas = document.getElementById('fish-canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.documentElement.scrollHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); });
+
+// Scroll offset for canvas
+let scrollY = 0;
+window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+const TEAL = '#67c9cb';
+const FISH_COUNT = 6;
+
+function createFish(id) {
+  const goingRight = Math.random() > 0.5;
+  const size = 18 + Math.random() * 14; // subtle small fish
+  const speed = 0.4 + Math.random() * 0.5;
+  const yPos = 120 + Math.random() * (document.documentElement.scrollHeight - 240);
+  const x = goingRight ? -80 : canvas.width + 80;
+  const opacity = 0.22 + Math.random() * 0.18; // subtle
+
+  // Slight vertical wobble
+  const wobbleAmp = 6 + Math.random() * 8;
+  const wobbleFreq = 0.012 + Math.random() * 0.01;
+  const wobbleOffset = Math.random() * Math.PI * 2;
+
+  return { id, x, y: yPos, size, speed, goingRight, opacity, wobbleAmp, wobbleFreq, wobbleOffset, baseY: yPos, done: false };
+}
+
+let fishes = [];
+for (let i = 0; i < FISH_COUNT; i++) {
+  const f = createFish(i);
+  // Stagger start positions
+  f.x = f.goingRight
+    ? -80 - Math.random() * canvas.width * 1.5
+    : canvas.width + 80 + Math.random() * canvas.width * 1.5;
+  fishes.push(f);
+}
+
+function drawFish(f, t) {
+  ctx.save();
+  ctx.globalAlpha = f.opacity;
+
+  const x = f.x;
+  const y = f.baseY + Math.sin(t * f.wobbleFreq + f.wobbleOffset) * f.wobbleAmp;
+  const s = f.size;
+
+  ctx.translate(x, y);
+  if (!f.goingRight) {
+    ctx.scale(-1, 1); // flip for left-going fish
+  }
+
+  // Body
+  ctx.beginPath();
+  ctx.ellipse(0, 0, s * 1.5, s * 0.65, 0, 0, Math.PI * 2);
+  ctx.fillStyle = TEAL;
+  ctx.fill();
+
+  // Tail
+  ctx.beginPath();
+  ctx.moveTo(-s * 1.4, 0);
+  ctx.lineTo(-s * 2.2, -s * 0.65);
+  ctx.lineTo(-s * 2.2, s * 0.65);
+  ctx.closePath();
+  ctx.fillStyle = TEAL;
+  ctx.fill();
+
+  // Fin (top)
+  ctx.beginPath();
+  ctx.moveTo(s * 0.1, -s * 0.62);
+  ctx.quadraticCurveTo(s * 0.5, -s * 1.15, s * 1.0, -s * 0.55);
+  ctx.lineTo(s * 0.6, -s * 0.45);
+  ctx.closePath();
+  ctx.fillStyle = TEAL;
+  ctx.fill();
+
+  // Eye
+  ctx.beginPath();
+  ctx.arc(s * 1.0, -s * 0.1, s * 0.14, 0, Math.PI * 2);
+  ctx.fillStyle = '#0d0d0d';
+  ctx.fill();
+
+  // Eye shine
+  ctx.beginPath();
+  ctx.arc(s * 1.05, -s * 0.14, s * 0.05, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fill();
+
+  // Scale lines (subtle)
+  ctx.globalAlpha = f.opacity * 0.25;
+  ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+  ctx.lineWidth = 0.7;
+  for (let i = -1; i <= 1; i++) {
+    ctx.beginPath();
+    ctx.arc(s * 0.2 + i * s * 0.45, 0, s * 0.55, Math.PI * 0.25, Math.PI * 0.75);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+let lastTime = 0;
+function animate(t) {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  fishes.forEach(f => {
+    if (f.done) return;
+    f.x += f.goingRight ? f.speed : -f.speed;
+    drawFish(f, t);
+
+    // Reset when off screen
+    if (f.goingRight && f.x > canvas.width + 100) {
+      const nf = createFish(f.id);
+      Object.assign(f, nf);
+    }
+    if (!f.goingRight && f.x < -100) {
+      const nf = createFish(f.id);
+      nf.goingRight = false;
+      Object.assign(f, nf);
+    }
+  });
+}
+requestAnimationFrame(animate);
+
+// Resize canvas height on scroll (for fixed canvas covering full page)
+window.addEventListener('scroll', () => {
+  const newH = document.documentElement.scrollHeight;
+  if (canvas.height !== newH) { canvas.height = newH; }
+});
+
+/* ─── NAV HAMBURGER ─────────────────────────────────────── */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mm-link').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+/* ─── SCROLL REVEAL ─────────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
